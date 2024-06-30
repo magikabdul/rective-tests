@@ -40,6 +40,7 @@ public class GlobalExceptionHandler extends AbstractErrorWebExceptionHandler {
 
     Mono<ServerResponse> renderErrorResponse(final ServerRequest serverRequest) {
         Map<String, Object> errorAttributesMap = getErrorAttributes(serverRequest, ErrorAttributeOptions.defaults());
+        /* Map<String, Object> errorAttributesMap = getErrorAttributes(serverRequest, ErrorAttributeOptions.of(ErrorAttributeOptions.Include.STACK_TRACE)); */
 
         return ServerResponse
                 .status((int) errorAttributesMap.get("status"))
