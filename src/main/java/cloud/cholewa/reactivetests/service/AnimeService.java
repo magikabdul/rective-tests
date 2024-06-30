@@ -5,6 +5,7 @@ import cloud.cholewa.reactivetests.repository.AnimeRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 @org.springframework.stereotype.Service
 @Slf4j
@@ -15,5 +16,9 @@ public class AnimeService {
 
     public Flux<Anime> findAll() {
         return animeRepository.findAll();
+    }
+
+    public Mono<Anime> findById(int id) {
+        return animeRepository.findById(id);
     }
 }

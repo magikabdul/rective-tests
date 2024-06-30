@@ -32,7 +32,6 @@
         <blockhound.version>1.0.6.RELEASE</blockhound.version>
     </properties>
     <dependencies>
-
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-webflux</artifactId>
