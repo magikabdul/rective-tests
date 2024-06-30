@@ -1,20 +1,20 @@
 spring:
-    application:
-        name: reactive-tests
-    r2dbc:
-        url: r2dbc:postgresql://192.168.21.246:5432/postgres?schema=anime
-        username: root
-        password: root
-    profiles:
-        active: cloud
+  application:
+    name: reactive-tests
+  r2dbc:
+    url: r2dbc:postgresql://192.168.21.246:5432/postgres?schema=anime
+    username: root
+    password: root
+  profiles:
+    active: cloud
 
 logbook:
   format:
-      style: http
+    style: http
 
 logging:
-    level:
-        org.zalando.logbook: trace
-        root: warn
-        cloud.cholewa.reactivetests: debug
+  level:
+    org.zalando.logbook: trace
+    root: warn
+    cloud.cholewa.reactivetests: debug
 

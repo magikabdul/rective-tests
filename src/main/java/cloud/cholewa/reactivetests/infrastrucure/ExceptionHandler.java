@@ -14,16 +14,16 @@ public class ExceptionHandler {
     @Bean
     @Order(-2)
     public GlobalExceptionHandler globalExceptionHandler(
-            final ErrorAttributes errorAttributes,
-            final WebProperties webProperties,
-            final ApplicationContext applicationContext,
-            final ServerCodecConfigurer serverCodecConfigurer
+        final ErrorAttributes errorAttributes,
+        final WebProperties webProperties,
+        final ApplicationContext applicationContext,
+        final ServerCodecConfigurer serverCodecConfigurer
     ) {
         GlobalExceptionHandler globalExceptionHandler = new GlobalExceptionHandler(
-                errorAttributes,
-                webProperties.getResources(),
-                applicationContext,
-                serverCodecConfigurer
+            errorAttributes,
+            webProperties.getResources(),
+            applicationContext,
+            serverCodecConfigurer
         );
 
         return globalExceptionHandler;

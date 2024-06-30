@@ -18,10 +18,10 @@ import java.util.Map;
 public class GlobalExceptionHandler extends AbstractErrorWebExceptionHandler {
 
     public GlobalExceptionHandler(
-            ErrorAttributes errorAttributes,
-            WebProperties.Resources resources,
-            ApplicationContext applicationContext,
-            ServerCodecConfigurer serverCodecConfigurer
+        ErrorAttributes errorAttributes,
+        WebProperties.Resources resources,
+        ApplicationContext applicationContext,
+        ServerCodecConfigurer serverCodecConfigurer
     ) {
         super(errorAttributes, resources, applicationContext);
         this.setMessageWriters(serverCodecConfigurer.getWriters());
@@ -37,14 +37,13 @@ public class GlobalExceptionHandler extends AbstractErrorWebExceptionHandler {
         log.error("Received {} error", throwable.getClass().getName());
     }
 
-
     Mono<ServerResponse> renderErrorResponse(final ServerRequest serverRequest) {
         Map<String, Object> errorAttributesMap = getErrorAttributes(serverRequest, ErrorAttributeOptions.defaults());
         /* Map<String, Object> errorAttributesMap = getErrorAttributes(serverRequest, ErrorAttributeOptions.of(ErrorAttributeOptions.Include.STACK_TRACE)); */
 
         return ServerResponse
-                .status((int) errorAttributesMap.get("status"))
-                .contentType(MediaType.APPLICATION_JSON)
-                .body(BodyInserters.fromValue(errorAttributesMap));
+            .status((int) errorAttributesMap.get("status"))
+            .contentType(MediaType.APPLICATION_JSON)
+            .body(BodyInserters.fromValue(errorAttributesMap));
     }
 }

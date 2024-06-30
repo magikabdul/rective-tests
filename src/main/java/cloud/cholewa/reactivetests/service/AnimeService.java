@@ -22,7 +22,7 @@ public class AnimeService {
 
     public Mono<Anime> findById(int id) {
         return animeRepository.findById(id)
-                .switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.NOT_FOUND)));
+            .switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.NOT_FOUND)));
     }
 
     public Mono<Anime> save(Anime anime) {
@@ -31,18 +31,18 @@ public class AnimeService {
 
     public Mono<Void> update(Integer id, Anime anime) {
         return animeRepository.findById(id)
-                .switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.BAD_REQUEST, "Anime not found")))
-                .map(a -> {
-                    a.setName(anime.getName());
-                    return a;
-                })
-                .flatMap(animeRepository::save)
-                .then();
+            .switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.BAD_REQUEST, "Anime not found")))
+            .map(a -> {
+                a.setName(anime.getName());
+                return a;
+            })
+            .flatMap(animeRepository::save)
+            .then();
 
     }
 
     public Mono<Void> delete(Integer id) {
         return animeRepository.findById(id)
-                .flatMap(animeRepository::delete);
+            .flatMap(animeRepository::delete);
     }
 }
