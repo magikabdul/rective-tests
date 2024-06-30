@@ -4,20 +4,17 @@ import cloud.cholewa.reactivetests.domain.Anime;
 import cloud.cholewa.reactivetests.repository.AnimeRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.Arguments;
-import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.web.server.ResponseStatusException;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
-import java.util.stream.Stream;
-
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -81,26 +78,87 @@ class AnimeServiceTest {
         verify(animeRepository, times(1)).save(anime);
     }
 
-    @ParameterizedTest(name = "{0}")
-    @MethodSource("serviceParams")
-    void serviceTests(
-        final String name
-    ) {
+    @Test
+    void shouldFindAnimeById() {
+        Anime anime = Anime.builder().name("aaa").build();
+
+        when(animeRepository.findById(1)).thenReturn(Mono.just(anime));
 
         animeService.findById(1)
             .as(StepVerifier::create)
-            .expectNextCount(1)
+            .expectNext(anime)
             .verifyComplete();
+
+        verify(animeRepository, times(1)).findById(1);
     }
 
-    private static Stream<Arguments> serviceParams() {
-        return Stream.of(
-            Arguments.of(
-                "anime with id exists"
-            ),
-            Arguments.of(
-                "anime with id does not exists"
-            )
-        );
+    @Test
+    void shouldThrowExceptionWhenAnimeNotFoundById() {
+        when(animeRepository.findById(anyInt())).thenReturn(Mono.empty());
+
+        animeService.findById(1)
+            .as(StepVerifier::create)
+            .expectError(ResponseStatusException.class)
+            .verify();
+
+        verify(animeRepository, times(1)).findById(anyInt());
+    }
+
+    @Test
+    void shouldUpdateAnimeWhenExists() {
+        Anime anime = Anime.builder().name("aaa").build();
+
+        when(animeRepository.findById(anyInt())).thenReturn(Mono.just(anime));
+        when(animeRepository.save(any())).thenReturn(Mono.just(anime));
+
+        animeService.update(1, anime)
+            .as(StepVerifier::create)
+            .verifyComplete();
+
+        verify(animeRepository, times(1)).findById(anyInt());
+        verify(animeRepository, times(1)).save(any(Anime.class));
+    }
+
+    @Test
+    void shouldNotUpdateAnimeWhenNotExists() {
+        Anime anime = Anime.builder().name("aaa").build();
+
+        when(animeRepository.findById(anyInt())).thenReturn(Mono.empty());
+
+        animeService.update(1, anime)
+            .as(StepVerifier::create)
+            .expectError(ResponseStatusException.class)
+            .verify();
+
+        verify(animeRepository, times(1)).findById(anyInt());
+        verify(animeRepository, never()).save(any());
+    }
+
+    @Test
+    void shouldDeleteAnimeWhenExists() {
+        Anime anime = Anime.builder().id(1).name("aaa").build();
+
+        when(animeRepository.findById(anyInt())).thenReturn(Mono.just(anime));
+        when(animeRepository.delete(any())).thenReturn(Mono.empty());
+
+        animeService.delete(1)
+            .as(StepVerifier::create)
+            .verifyComplete();
+
+        verify(animeRepository, times(1)).findById(anyInt());
+        verify(animeRepository, times(1)).delete(any());
+    }
+
+    @Test
+    void shouldNotDeleteAnimeWhenNotExistsAndThrowException() {
+        when(animeRepository.findById(anyInt())).thenReturn(Mono.empty());
+
+        animeService.delete(1)
+            .as(StepVerifier::create)
+            .expectError(ResponseStatusException.class)
+            .verify();
+
+        verify(animeRepository, times(1)).findById(anyInt());
+        verify(animeRepository, never()).delete(any());
     }
 }

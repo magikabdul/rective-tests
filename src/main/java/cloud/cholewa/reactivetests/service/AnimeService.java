@@ -43,6 +43,7 @@ public class AnimeService {
 
     public Mono<Void> delete(Integer id) {
         return animeRepository.findById(id)
+            .switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.BAD_REQUEST, "Anime not found")))
             .flatMap(animeRepository::delete);
     }
 }
