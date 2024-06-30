@@ -1,7 +1,7 @@
 package cloud.cholewa.reactivetests.controller;
 
 import cloud.cholewa.reactivetests.domain.Anime;
-import cloud.cholewa.reactivetests.repository.AnimeRepository;
+import cloud.cholewa.reactivetests.service.AnimeService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,10 +15,10 @@ import reactor.core.publisher.Flux;
 @RequiredArgsConstructor
 public class AnimeController {
 
-    private final AnimeRepository animeRepository;
+    private final AnimeService animeService;
 
     @GetMapping
     Flux<Anime> listAll() {
-        return animeRepository.findAll();
+        return animeService.findAll();
     }
 }
