@@ -1,0 +1,7 @@
+spring:
+    application:
+        name: reactive-tests
+    r2dbc:
+        url: r2dbc:postgresql://192.168.21.246:5432/postgres?scheme=anime
+        username: root
+        password: root
