@@ -5,3 +5,16 @@ spring:
         url: r2dbc:postgresql://192.168.21.246:5432/postgres?schema=anime
         username: root
         password: root
+    profiles:
+        active: cloud
+
+logbook:
+  format:
+      style: http
+
+logging:
+    level:
+        org.zalando.logbook: trace
+        root: warn
+        cloud.cholewa.reactivetests: debug
+
