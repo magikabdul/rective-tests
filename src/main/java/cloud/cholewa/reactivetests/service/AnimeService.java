@@ -40,4 +40,9 @@ public class AnimeService {
                 .then();
 
     }
+
+    public Mono<Void> delete(Integer id) {
+        return animeRepository.findById(id)
+                .flatMap(animeRepository::delete);
+    }
 }

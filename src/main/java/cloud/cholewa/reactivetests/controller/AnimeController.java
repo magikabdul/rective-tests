@@ -36,4 +36,9 @@ public class AnimeController {
     Mono<Void> update(@Valid @RequestBody Anime anime, @PathVariable Integer id) {
         return animeService.update(id, anime);
     }
+
+    @DeleteMapping("{id}")
+    Mono<Void> delete(@PathVariable Integer id) {
+        return animeService.delete(id);
+    }
 }
